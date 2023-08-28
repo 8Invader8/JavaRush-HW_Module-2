@@ -1,6 +1,6 @@
 package Island.Animals.Predators;
 
-import Island.Animals.Animals;
 
-public class Wolf extends Animals {
+
+public class Wolf  {
 }

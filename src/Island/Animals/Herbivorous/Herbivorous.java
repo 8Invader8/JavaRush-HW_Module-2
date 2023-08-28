@@ -1,6 +1,5 @@
 package Island.Animals.Herbivorous;
 
 
-
-public class Sheep  {
+public class Herbivorous {
 }
