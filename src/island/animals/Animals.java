@@ -1,51 +1,34 @@
-package Island.Animals;
+package island.animals;
 
-import Island.IslandFormOfLife;
+import island.IslandFormOfLife;
 
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Random;
 
 public abstract class Animals implements IslandFormOfLife,Runnable {
     public static final Random RANDOM = new Random();
-    private Map<IslandFormOfLife, Integer> canEat;
-    private ArrayList<Animals> listOfAnimals;
+    public static ArrayList<Animals> animalsOnField = new ArrayList<>();
     private String animalName;
+    private String animalIcon;
     private double weightOfAnimal;
     private int maxPopulationOnOneLocation;
     private int maxStepByMove;
     private double maxKiloCanEat;
+    private double stomachFullness;
     private boolean isAlive = true;
     private int x;
     private int y;
 
+    public abstract boolean eat(IslandFormOfLife islandFormOfLife);
+    public abstract void reproduce(Animals animals);
+    public abstract void die(IslandFormOfLife islandFormOfLife);
 
-    public int getX() {
-        return x;
+    public static ArrayList<Animals> getAnimalsOnField() {
+        return animalsOnField;
     }
 
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
-    public Map<IslandFormOfLife, Integer> getCanEat() {
-        return canEat;
-    }
-
-    public ArrayList<Animals> getListOfAnimals() {
-        return listOfAnimals;
-    }
-
-    public void setListOfAnimals(ArrayList<Animals> listOfAnimals) {
-        this.listOfAnimals = listOfAnimals;
+    public static void setAnimalsOnField(ArrayList<Animals> animalsOnField) {
+        Animals.animalsOnField = animalsOnField;
     }
 
     public String getAnimalName() {
@@ -54,6 +37,14 @@ public abstract class Animals implements IslandFormOfLife,Runnable {
 
     public void setAnimalName(String animalName) {
         this.animalName = animalName;
+    }
+
+    public String getAnimalIcon() {
+        return animalIcon;
+    }
+
+    public void setAnimalIcon(String animalIcon) {
+        this.animalIcon = animalIcon;
     }
 
     public double getWeightOfAnimal() {
@@ -88,6 +79,14 @@ public abstract class Animals implements IslandFormOfLife,Runnable {
         this.maxKiloCanEat = maxKiloCanEat;
     }
 
+    public double getStomachFullness() {
+        return stomachFullness;
+    }
+
+    public void setStomachFullness(double stomachFullness) {
+        this.stomachFullness = stomachFullness;
+    }
+
     public boolean isAlive() {
         return isAlive;
     }
@@ -95,10 +94,23 @@ public abstract class Animals implements IslandFormOfLife,Runnable {
     public void setAlive(boolean alive) {
         isAlive = alive;
     }
-    public abstract void eat();
-    public abstract void reproduce();
-    public abstract void move();
-    public abstract void die();
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
     @Override
     public void run() {
 
