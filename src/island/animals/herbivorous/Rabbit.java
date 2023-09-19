@@ -33,7 +33,10 @@ public class Rabbit extends Herbivorous {
         setStomachFullness(stomachFullness);
         setMaxStepByMove(maxStepByMove);
     }
-
+    protected void getHungry(){
+        double hungry = getMaxKiloCanEat()/10;
+        setStomachFullness(getStomachFullness() - hungry);
+    }
     @Override
     public boolean eat(Plants plant) {
         if(canEat.containsKey(plant)) {
@@ -51,8 +54,8 @@ public class Rabbit extends Herbivorous {
     public void reproduce(Animals animals) {
         int chanceOfReproduce = RANDOM.nextInt(2);
         if(chanceOfReproduce == 1){
-            if(!(animalsOnField.size() >= maxPopulationOnOneLocation)) {
-                animalsOnField.add(new Bear());
+            if(!(animalsOnOneField.size() >= maxPopulationOnOneLocation)) {
+                animalsOnOneField.add(new Bear());
             }
         }
     }
@@ -60,7 +63,35 @@ public class Rabbit extends Herbivorous {
 
     public void die(IslandFormOfLife islandFormOfLife){
         if(weightOfAnimal == animalLowHealth){
-            animalsOnField.remove(islandFormOfLife);
+            animalsOnOneField.remove(islandFormOfLife);
+        }
+    }
+
+    @Override
+    public void run(){
+        setY(RANDOM.nextInt(island.getHeight()));
+        setX(RANDOM.nextInt(island.getWidth()));
+
+        island.fields[getY()][getX()].animalsOnOneField.add(this);
+        while (isAlive()) {
+            island.move(this);
+
+            for (Plants plant : island.fields[getY()][getX()].plantsOnOneField) {
+                this.eat(plant);
+            }
+
+            for(Animals animal : island.fields[getY()][getX()].animalsOnOneField){
+                this.reproduce(animal);
+            }
+
+            getHungry();
+            die(this);
+
+            try{
+                Thread.sleep(3000);
+            }catch (InterruptedException e){
+                throw new RuntimeException("Thread was interrupted!");
+            }
         }
     }
 }

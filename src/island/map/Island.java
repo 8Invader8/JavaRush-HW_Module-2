@@ -1,12 +1,19 @@
 package island.map;
 
 
+import island.IslandFormOfLife;
+import island.Plants;
 import island.animals.Animals;
-
+import island.animals.herbivorous.*;
+import island.animals.predators.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
-public abstract class Island {
+import static island.Plants.setGrowPlants;
+
+public class Island {
 
     private final String nameOfIsland = "The Paradise";
     private final int width = 20;
@@ -16,9 +23,44 @@ public abstract class Island {
     private final int DOWN = 3;
     private final int LEFT = 4;
     private final Random random = new Random();
-    public Island[][] fields;
-    public ArrayList<Animals> animalsOnOneField = new ArrayList<>();
-    public ArrayList<Animals> plantsOnOneField = new ArrayList<>();
+    public volatile Island[][] fields = new Island[height][width];
+    protected volatile Island island = new Island();
+    protected volatile Map<IslandFormOfLife, Integer> availableFormOfLife = new HashMap<>();
+    public volatile ArrayList<Animals> animalsOnOneField = new ArrayList<>();
+    public volatile ArrayList<Plants> plantsOnOneField = new ArrayList<>();
+
+    {
+        animalsOnOneField.add(new Boar());
+        animalsOnOneField.add(new Buffalo());
+        animalsOnOneField.add(new Caterpillar());
+        animalsOnOneField.add(new Deer());
+        animalsOnOneField.add(new Duck());
+        animalsOnOneField.add(new Goat());
+        animalsOnOneField.add(new Horse());
+        animalsOnOneField.add(new Mouse());
+        animalsOnOneField.add(new Rabbit());
+        animalsOnOneField.add(new Sheep());
+        animalsOnOneField.add(new Bear());
+        animalsOnOneField.add(new Boa());
+        animalsOnOneField.add(new Eagle());
+        animalsOnOneField.add(new Fox());
+        animalsOnOneField.add(new Wolf());
+        for(int i = 0; i < Plants.getMaxPopulationOnOneLocation();i++){
+            plantsOnOneField.add(new Plants());
+        }
+        setGrowPlants(plantsOnOneField);
+
+        for (Animals animals : animalsOnOneField) {
+            availableFormOfLife.put(animals, 1);
+        }
+    }
+
+    public Island getIsland() {
+        return island;
+    }
+    public void setIsland(Island island) {
+        this.island = island;
+    }
 
     public String getNameOfIsland() {
         return nameOfIsland;
@@ -48,11 +90,11 @@ public abstract class Island {
         this.animalsOnOneField = animalsOnOneField;
     }
 
-    public ArrayList<Animals> getPlantsOnOneField() {
+    public ArrayList<Plants> getPlantsOnOneField() {
         return plantsOnOneField;
     }
 
-    public void setPlantsOnOneField(ArrayList<Animals> plantsOnOneField) {
+    public void setPlantsOnOneField(ArrayList<Plants> plantsOnOneField) {
         this.plantsOnOneField = plantsOnOneField;
     }
 
@@ -79,9 +121,11 @@ public abstract class Island {
                         step--;
                 }
                 fields[animals.getY()][animals.getX()].animalsOnOneField.remove(animals);
+                availableFormOfLife.put(animals, (availableFormOfLife.get(animals) - 1));
                 animals.setX(newX);
                 animals.setY(newY);
                 fields[newY][newX].animalsOnOneField.add(animals);
+                availableFormOfLife.put(animals, (availableFormOfLife.get(animals) + 1));
             }
 
         }

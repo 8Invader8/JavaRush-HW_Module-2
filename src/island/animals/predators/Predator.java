@@ -1,9 +1,6 @@
 package island.animals.predators;
 
-import island.IslandFormOfLife;
 import island.animals.Animals;
-
-import java.util.ArrayList;
 
 public abstract class Predator extends Animals {
     private String animalName;

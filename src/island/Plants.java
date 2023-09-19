@@ -3,11 +3,11 @@ package island;
 
 import java.util.ArrayList;
 
-public class Plants implements IslandFormOfLife {
-    protected static ArrayList<Plants> growPlants = new ArrayList<>();
+public class Plants implements IslandFormOfLife, Runnable {
+    public static ArrayList<Plants> growPlants = new ArrayList<>();
     private final String nameOfPlant = "Grass";
     private final int weightOfPlants = 1;
-    private final int maxPopulationOnOneLocation = 200;
+    private static final int MAX_POPULATION_ON_ONE_LOCATION = 200;
     private boolean isAlive = true;
 
 
@@ -27,8 +27,8 @@ public class Plants implements IslandFormOfLife {
         return weightOfPlants;
     }
 
-    public int getMaxPopulationOnOneLocation() {
-        return maxPopulationOnOneLocation;
+    public static int getMaxPopulationOnOneLocation() {
+        return MAX_POPULATION_ON_ONE_LOCATION;
     }
 
     public boolean isAlive() {
@@ -37,5 +37,10 @@ public class Plants implements IslandFormOfLife {
 
     public void setAlive(boolean alive) {
         isAlive = alive;
+    }
+
+    @Override
+    public void run() {
+
     }
 }

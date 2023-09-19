@@ -1,34 +1,45 @@
 package island.animals;
 
 import island.IslandFormOfLife;
+import island.map.Island;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 public abstract class Animals implements IslandFormOfLife,Runnable {
     public static final Random RANDOM = new Random();
-    public static ArrayList<Animals> animalsOnField = new ArrayList<>();
+    public volatile static ArrayList<Animals> animalsOnOneField = new ArrayList<>();
+    protected volatile static Island island;
     private String animalName;
-    private String animalIcon;
+    private volatile String animalIcon;
     private double weightOfAnimal;
     private int maxPopulationOnOneLocation;
     private int maxStepByMove;
-    private double maxKiloCanEat;
-    private double stomachFullness;
-    private boolean isAlive = true;
-    private int x;
-    private int y;
+    private volatile double maxKiloCanEat;
+    private volatile double stomachFullness;
+    private volatile boolean isAlive = true;
+    private volatile int x;
+    private volatile int y;
+
 
     public abstract boolean eat(IslandFormOfLife islandFormOfLife);
     public abstract void reproduce(Animals animals);
     public abstract void die(IslandFormOfLife islandFormOfLife);
 
-    public static ArrayList<Animals> getAnimalsOnField() {
-        return animalsOnField;
+    public static Island getIsland(){
+        return island;
     }
 
-    public static void setAnimalsOnField(ArrayList<Animals> animalsOnField) {
-        Animals.animalsOnField = animalsOnField;
+    public static void setIsland(Island island){
+        Animals.island = island;
+    }
+
+    public static ArrayList<Animals> getAnimalsOnOneField() {
+        return animalsOnOneField;
+    }
+
+    public static void setAnimalsOnOneField(ArrayList<Animals> animalsOnOneField) {
+        Animals.animalsOnOneField = animalsOnOneField;
     }
 
     public String getAnimalName() {
@@ -111,8 +122,5 @@ public abstract class Animals implements IslandFormOfLife,Runnable {
         this.y = y;
     }
 
-    @Override
-    public void run() {
 
-    }
 }
