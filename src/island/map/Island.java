@@ -23,37 +23,9 @@ public class Island {
     private final int DOWN = 3;
     private final int LEFT = 4;
     private final Random random = new Random();
-    public volatile Island[][] fields = new Island[height][width];
+    public volatile Field[][] fields;
     protected volatile Island island = new Island();
-    protected volatile Map<IslandFormOfLife, Integer> availableFormOfLife = new HashMap<>();
-    public volatile ArrayList<Animals> animalsOnOneField = new ArrayList<>();
-    public volatile ArrayList<Plants> plantsOnOneField = new ArrayList<>();
 
-    {
-        animalsOnOneField.add(new Boar());
-        animalsOnOneField.add(new Buffalo());
-        animalsOnOneField.add(new Caterpillar());
-        animalsOnOneField.add(new Deer());
-        animalsOnOneField.add(new Duck());
-        animalsOnOneField.add(new Goat());
-        animalsOnOneField.add(new Horse());
-        animalsOnOneField.add(new Mouse());
-        animalsOnOneField.add(new Rabbit());
-        animalsOnOneField.add(new Sheep());
-        animalsOnOneField.add(new Bear());
-        animalsOnOneField.add(new Boa());
-        animalsOnOneField.add(new Eagle());
-        animalsOnOneField.add(new Fox());
-        animalsOnOneField.add(new Wolf());
-        for(int i = 0; i < Plants.getMaxPopulationOnOneLocation();i++){
-            plantsOnOneField.add(new Plants());
-        }
-        setGrowPlants(plantsOnOneField);
-
-        for (Animals animals : animalsOnOneField) {
-            availableFormOfLife.put(animals, 1);
-        }
-    }
 
     public Island getIsland() {
         return island;
@@ -78,24 +50,8 @@ public class Island {
         return fields;
     }
 
-    public void setFields(Island[][] fields) {
+    public void setFields(Field[][] fields) {
         this.fields = fields;
-    }
-
-    public ArrayList<Animals> getAnimalsOnOneField() {
-        return animalsOnOneField;
-    }
-
-    public void setAnimalsOnOneField(ArrayList<Animals> animalsOnOneField) {
-        this.animalsOnOneField = animalsOnOneField;
-    }
-
-    public ArrayList<Plants> getPlantsOnOneField() {
-        return plantsOnOneField;
-    }
-
-    public void setPlantsOnOneField(ArrayList<Plants> plantsOnOneField) {
-        this.plantsOnOneField = plantsOnOneField;
     }
 
     public void move(Animals animals){
@@ -120,12 +76,13 @@ public class Island {
                         newX -= 1;
                         step--;
                 }
-                fields[animals.getY()][animals.getX()].animalsOnOneField.remove(animals);
-                availableFormOfLife.put(animals, (availableFormOfLife.get(animals) - 1));
+
+                fields[animals.getY()][animals.getX()].getFieldHashMap().remove(animals, (fields[animals.getY()][animals.getX()].getFieldHashMap().get(animals) - 1));
+
                 animals.setX(newX);
                 animals.setY(newY);
-                fields[newY][newX].animalsOnOneField.add(animals);
-                availableFormOfLife.put(animals, (availableFormOfLife.get(animals) + 1));
+
+                fields[animals.getY()][animals.getX()].getFieldHashMap().put(animals, (fields[animals.getY()][animals.getX()].getFieldHashMap().get(animals) + 1));
             }
 
         }
@@ -142,7 +99,7 @@ public class Island {
         int countOfAnimals = 0;
         for(int i = 0; i < fields.length; i++){
             for(int j = 0; j < fields[i].length; j++){
-                for(int n = 0; n < fields[i][j].animalsOnOneField.size(); n++){
+                for(int n = 0; n < fields[i][j].getFieldHashMap(). !!!!!!!.size(); n++){
                     countOfAnimals++;
                 }
             }

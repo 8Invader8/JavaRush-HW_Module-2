@@ -4,6 +4,7 @@ package island;
 import island.animals.Animals;
 import island.animals.herbivorous.*;
 import island.animals.predators.*;
+import island.map.Field;
 import island.map.Island;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,7 +13,6 @@ import java.util.Map;
 
 public class FirstInitialize {
     protected volatile Island island = new Island();
-    protected volatile Map<IslandFormOfLife, Integer> availableFormOfLife = new HashMap<>();
     private int countOfBoars = 1;
     private int countOfBuffaloes = 1;
     private int countOfCaterpillars = 1;
@@ -29,47 +29,33 @@ public class FirstInitialize {
     private int countOfFoxes = 1;
     private int countOfWolfs = 1;
     private int countOfPlants = 200;
-//    public volatile ArrayList<Animals> animalsOnOneField;
-//    public volatile ArrayList<Plants> plantsOnOneField;
+    private final int width = 20;
+    private final int height = 100;
+    protected volatile Field[][] fields = new Field[height][width];
+
 
     {
-
-        availableFormOfLife.put(new Boar(), countOfBoars);
-        availableFormOfLife.put(new Buffalo(), countOfBuffaloes);
-        availableFormOfLife.put(new Caterpillar(), countOfCaterpillars);
-        availableFormOfLife.put(new Deer(), countOfDeer);
-        availableFormOfLife.put(new Duck(), countOfDucks);
-        availableFormOfLife.put(new Goat(), countOfGoats);
-        availableFormOfLife.put(new Horse(), countOfHorses);
-        availableFormOfLife.put(new Mouse(), countOfMouses);
-        availableFormOfLife.put(new Rabbit(), countOfRabbits);
-        availableFormOfLife.put(new Sheep(), countOfSheep);
-        availableFormOfLife.put(new Bear(), countOfBear);
-        availableFormOfLife.put(new Boa(), countOfBoas);
-        availableFormOfLife.put(new Eagle(), countOfEagles);
-        availableFormOfLife.put(new Fox(), countOfFoxes);
-        availableFormOfLife.put(new Wolf(), countOfWolfs);
-        availableFormOfLife.put(new Plants(), countOfPlants);
-//
-
-//        animalsOnOneField.add(new Boar());
-//        animalsOnOneField.add(new Buffalo());
-//        animalsOnOneField.add(new Caterpillar());
-//        animalsOnOneField.add(new Deer());
-//        animalsOnOneField.add(new Duck());
-//        animalsOnOneField.add(new Goat());
-//        animalsOnOneField.add(new Horse());
-//        animalsOnOneField.add(new Mouse());
-//        animalsOnOneField.add(new Rabbit());
-//        animalsOnOneField.add(new Sheep());
-//        animalsOnOneField.add(new Bear());
-//        animalsOnOneField.add(new Boa());
-//        animalsOnOneField.add(new Eagle());
-//        animalsOnOneField.add(new Fox());
-//        animalsOnOneField.add(new Wolf());
-//        for(int i = 0; i < Plants.getMaxPopulationOnOneLocation();i++){
-//            plantsOnOneField.add(new Plants());
-//        }
+        for (int i = 0; i < fields.length; i++) {
+            for (int j = 0; j < fields[i].length; j++) {
+                fields[i][j] = new Field();
+                fields[i][j].getFieldHashMap().put(new Boar(),countOfBoars);
+                fields[i][j].getFieldHashMap().put(new Buffalo(),countOfBuffaloes);
+                fields[i][j].getFieldHashMap().put(new Caterpillar(),countOfCaterpillars);
+                fields[i][j].getFieldHashMap().put(new Deer(),countOfDeer);
+                fields[i][j].getFieldHashMap().put(new Duck(),countOfDucks);
+                fields[i][j].getFieldHashMap().put(new Goat(),countOfGoats);
+                fields[i][j].getFieldHashMap().put(new Horse(),countOfHorses);
+                fields[i][j].getFieldHashMap().put(new Mouse(),countOfMouses);
+                fields[i][j].getFieldHashMap().put(new Rabbit(),countOfRabbits);
+                fields[i][j].getFieldHashMap().put(new Sheep(),countOfSheep);
+                fields[i][j].getFieldHashMap().put(new Bear(),countOfBear);
+                fields[i][j].getFieldHashMap().put(new Boa(),countOfBoas);
+                fields[i][j].getFieldHashMap().put(new Eagle(),countOfEagles);
+                fields[i][j].getFieldHashMap().put(new Fox(),countOfFoxes);
+                fields[i][j].getFieldHashMap().put(new Wolf(),countOfWolfs);
+                fields[i][j].getFieldHashMap().put(new Plants(),countOfPlants);
+            }
+        }
 
 
     }
