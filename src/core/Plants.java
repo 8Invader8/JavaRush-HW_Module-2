@@ -1,4 +1,4 @@
-package island;
+package core;
 
 
 import java.util.ArrayList;

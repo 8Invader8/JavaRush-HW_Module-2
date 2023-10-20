@@ -1,28 +1,26 @@
-package island.animals;
+package core.animals;
 
-import island.IslandFormOfLife;
-import island.map.Island;
+import core.IslandFormOfLife;
+import core.Island;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 public abstract class Animals implements IslandFormOfLife,Runnable {
     public static final Random RANDOM = new Random();
-    public volatile static ArrayList<Animals> animalsOnOneField = new ArrayList<>();
-    protected volatile static Island island;
+    public static volatile Island island = new Island();
     private String animalName;
     private volatile String animalIcon;
     private double weightOfAnimal;
     private int maxPopulationOnOneLocation;
     private int maxStepByMove;
     private volatile double maxKiloCanEat;
-    private volatile double stomachFullness;
+//    private volatile double stomachFullness;
     private volatile boolean isAlive = true;
     private volatile int x;
     private volatile int y;
 
 
-    public abstract boolean eat(IslandFormOfLife islandFormOfLife);
+    public abstract boolean eat(Animals animals);
     public abstract void reproduce(Animals animals);
     public abstract void die(IslandFormOfLife islandFormOfLife);
 
@@ -31,15 +29,8 @@ public abstract class Animals implements IslandFormOfLife,Runnable {
     }
 
     public static void setIsland(Island island){
-        Animals.island = island;
-    }
-
-    public static ArrayList<Animals> getAnimalsOnOneField() {
-        return animalsOnOneField;
-    }
-
-    public static void setAnimalsOnOneField(ArrayList<Animals> animalsOnOneField) {
-        Animals.animalsOnOneField = animalsOnOneField;
+//       this.island = island;
+       Animals.island = island;
     }
 
     public String getAnimalName() {
@@ -90,14 +81,6 @@ public abstract class Animals implements IslandFormOfLife,Runnable {
         this.maxKiloCanEat = maxKiloCanEat;
     }
 
-    public double getStomachFullness() {
-        return stomachFullness;
-    }
-
-    public void setStomachFullness(double stomachFullness) {
-        this.stomachFullness = stomachFullness;
-    }
-
     public boolean isAlive() {
         return isAlive;
     }
@@ -122,5 +105,8 @@ public abstract class Animals implements IslandFormOfLife,Runnable {
         this.y = y;
     }
 
-
+    @Override
+    public void run() {
+        System.out.println("Thread 1");
+    }
 }

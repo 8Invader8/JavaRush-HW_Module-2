@@ -1,4 +1,4 @@
-package island;
+package core;
 
 public interface IslandFormOfLife {
 }

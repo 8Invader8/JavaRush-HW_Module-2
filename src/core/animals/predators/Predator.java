@@ -1,13 +1,12 @@
-package island.animals.predators;
+package core.animals.predators;
 
-import island.animals.Animals;
+import core.animals.Animals;
 
 public abstract class Predator extends Animals {
     private String animalName;
     private String animalIcon;
     private double weightOfAnimal;
     private double maxKiloCanEat;
-    private double stomachFullness;
 
     @Override
     public String getAnimalName() {
@@ -47,15 +46,5 @@ public abstract class Predator extends Animals {
     @Override
     public void setMaxKiloCanEat(double maxKiloCanEat) {
         this.maxKiloCanEat = maxKiloCanEat;
-    }
-
-    @Override
-    public double getStomachFullness() {
-        return stomachFullness;
-    }
-
-    @Override
-    public void setStomachFullness(double stomachFullness) {
-        this.stomachFullness = stomachFullness;
     }
 }
