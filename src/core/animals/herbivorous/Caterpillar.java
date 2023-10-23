@@ -1,5 +1,6 @@
 package core.animals.herbivorous;
 
+import core.Island;
 import core.IslandFormOfLife;
 import core.Plants;
 import core.animals.Animals;
@@ -13,8 +14,9 @@ public class Caterpillar extends Herbivorous{
     private final double weightOfAnimal = 0.01;
     private final int maxPopulationOnOneLocation = 1000;
     private final int maxStepByMove = 0;
-    private final double maxKiloCanEat = 0.0;
-//    private double stomachFullness = 350.0;
+    private final double maxKiloCanEat = 1.0;
+//    private final double maxKiloCanEat = 0.0;
+    //    private double stomachFullness = 350.0;
 
     public Caterpillar(){
         setAnimalName(animalName);
@@ -24,8 +26,8 @@ public class Caterpillar extends Herbivorous{
         setMaxStepByMove(maxStepByMove);
     }
 
-    public boolean eat(Plants plant) {
-        if(island.fields[this.getY()][this.getX()].getFieldHashMap().get(Plants.class) > 0) {
+    public boolean eatPlant(IslandFormOfLife plant) {
+        if(island.fields[this.getY()][this.getX()].getFieldHashMap().get(plant) > 0) {
             island.fields[this.getY()][this.getX()].getFieldHashMap().put(
                     plant,
                     (island.fields[this.getY()][this.getX()].getFieldHashMap().get(plant) - 1)
@@ -59,6 +61,7 @@ public class Caterpillar extends Herbivorous{
     public void die(Animals animals){
         int chanceToDie = RANDOM.nextInt(2);
         if (chanceToDie == 1){
+            System.out.println("Caterpillar die!");
             island.fields[animals.getY()][animals.getX()].getFieldHashMap().put(
                     animals,
                     island.fields[animals.getY()][animals.getX()].getFieldHashMap().get(animals) - 1
@@ -71,7 +74,7 @@ public class Caterpillar extends Herbivorous{
     }
 
     @Override
-    public void run(){
+    public synchronized void run(){
         setY(RANDOM.nextInt(island.getHeight()));
         setX(RANDOM.nextInt(island.getWidth()));
 
@@ -84,7 +87,7 @@ public class Caterpillar extends Herbivorous{
 
             for(Map.Entry<IslandFormOfLife, Integer> entry : island.fields[getY()][getX()].getFieldHashMap().entrySet()) {
                 if (Objects.equals(entry.getKey().getClass(), Plants.class)){
-                    this.eat((Plants) entry.getKey());
+                    this.eatPlant(entry.getKey());
                 }
             }
 
@@ -94,7 +97,7 @@ public class Caterpillar extends Herbivorous{
                 }
             }
 
-            die(this);
+//            die(this);
 
             try {
                 Thread.sleep(3000);

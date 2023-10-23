@@ -18,7 +18,11 @@ public class Menu implements Runnable {
 
         while (!isRunning) {
             System.out.println(welcomeMenu);
-
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             isRunning = false;
             while (!isRunning) {
                 this.run();
@@ -38,14 +42,15 @@ public class Menu implements Runnable {
         for (int i = 0; i < Animals.getIsland().fields.length; i++) {
             for (int j = 0; j < Animals.getIsland().fields[i].length; j++) {
                 for (Map.Entry<IslandFormOfLife, Integer> entry : Animals.getIsland().fields[i][j].getFieldHashMap().entrySet()) {
-                   for(int n = 0; n < entry.getValue(); n++){
+//                   for(int n = 0; n < entry.getValue(); n++){
+//                   for(int n = 0; n < entry.getValue(); n++){
                        if(Objects.equals(entry.getKey().getClass(), Plants.class)) {
                            continue;
                        }
                        Animals animals = (Animals) entry.getKey();
                        Thread thread = new Thread(animals);
                        thread.start();
-                   }
+//                   }
                 }
             }
         }

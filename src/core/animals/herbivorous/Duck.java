@@ -15,7 +15,8 @@ public class Duck extends Herbivorous {
     private final double weightOfAnimal = 1.0;
     private final int maxPopulationOnOneLocation = 200;
     private final int maxStepByMove = 4;
-    private final double maxKiloCanEat = 0.15;
+    private final double maxKiloCanEat = 1.0;
+//    private final double maxKiloCanEat = 0.15;
 //    private final int animalLowHealth = 40;
     private final int chanceToEatCaterpillar = 90;
     private final int chanceToEatPlants = 100;
@@ -23,7 +24,7 @@ public class Duck extends Herbivorous {
 
 
     {
-        canEat.put(new Plants(),chanceToEatPlants);
+        canEat.put(new Plants(), chanceToEatPlants);
         canEat.put(new Caterpillar(), chanceToEatCaterpillar);
     }
 
@@ -38,26 +39,56 @@ public class Duck extends Herbivorous {
 //        double hungry = getMaxKiloCanEat()/10;
 //        setStomachFullness(getStomachFullness() - hungry);
 //    }
+
+
     @Override
-    public boolean eat(Animals animals){
+    public boolean eat(Animals animals) {
+        return false;
+    }
+
+    public boolean eat(IslandFormOfLife f) {
+        Animals animals = (Animals) f;
         int chanceOfEat;
-        if (canEat.containsKey(animals)) {
-            chanceOfEat = RANDOM.nextInt(100 + 1);
-            if (chanceOfEat >= canEat.get(animals)) {
+        System.out.println("Zero if " + animals);
+        for (Map.Entry<IslandFormOfLife, Integer> entry : canEat.entrySet()) {
+            if (entry.getKey().equals(animals)) {
+                System.out.println("1.5 if " + entry.getKey() + " Animals: " + animals);
+//        if (canEat.containsKey(animals)) {
+                chanceOfEat = RANDOM.nextInt(100 + 1);
+                System.out.println("Enter first if" + chanceOfEat + " " + canEat.get(animals));
+                if (chanceOfEat <= canEat.get(animals)) {
+                    System.out.println("Enter second if");
 //                    stomachFullness += animals.getWeightOfAnimal()/2;
-                animals.setAlive(false);
-                island.fields[animals.getY()][animals.getX()].getFieldHashMap().put(
-                        animals,
-                        (island.fields[animals.getY()][animals.getX()].getFieldHashMap().get(animals) - 1)
-                );
-                return true;
+                    animals.setAlive(false);
+
+
+                    Animals akey = animals;
+                    Integer avalue = island.fields[getY()][getX()].getFieldHashMap().get(animals);
+
+
+                    System.out.println(" We have animals : " + animals);
+                    for (Map.Entry<IslandFormOfLife, Integer> entry1 : island.fields[this.getY()][this.getX()].getFieldHashMap().entrySet()){
+                        System.out.println("Class: " + entry1.getKey() + " , Value: " + entry1.getValue());
+                    }
+
+
+                    island.fields[getY()][getX()].getFieldHashMap().put(
+                            akey,
+                            (avalue - 1)
+//                            (island.fields[this.getY()][this.getX()].getFieldHashMap().get(animals) - 1)
+                    );
+                    System.out.println("Omnomnom Animal!");
+                    return true;
+                }
             }
         }
         return false;
     }
 
-    public boolean eat(Plants plant) {
-        if(island.fields[this.getY()][this.getX()].getFieldHashMap().get(Plants.class) > 0) {
+
+
+    public boolean eatPlant(IslandFormOfLife plant) {
+        if(island.fields[this.getY()][this.getX()].getFieldHashMap().get(plant) > 0) {
             island.fields[this.getY()][this.getX()].getFieldHashMap().put(
                     plant,
                     (island.fields[this.getY()][this.getX()].getFieldHashMap().get(plant) - 1)
@@ -98,26 +129,22 @@ public class Duck extends Herbivorous {
     }
 
     @Override
-    public void run(){
+    public synchronized void run(){
         setY(RANDOM.nextInt(island.getHeight()));
         setX(RANDOM.nextInt(island.getWidth()));
 
-        island.fields[getY()][getX()].getFieldHashMap().put(
-                this,
-                (island.fields[getY()][getX()].getFieldHashMap().get(this) + 1)
-        );
+//        island.fields[getY()][getX()].getFieldHashMap().put(
+//                this,
+//                (island.fields[getY()][getX()].getFieldHashMap().get(this) + 1)
+//        );
         while (isAlive()) {
             island.move(this);
 
             for(Map.Entry<IslandFormOfLife, Integer> entry : island.fields[getY()][getX()].getFieldHashMap().entrySet()) {
-                if (Objects.equals(entry.getKey().getClass(), Animals.class)){
-                    this.eat((Animals) entry.getKey());
-                }
-            }
-
-            for(Map.Entry<IslandFormOfLife, Integer> entry : island.fields[getY()][getX()].getFieldHashMap().entrySet()) {
                 if (Objects.equals(entry.getKey().getClass(), Plants.class)){
-                    this.eat((Plants) entry.getKey());
+                    this.eatPlant(entry.getKey());
+                }else {
+                    this.eat(entry.getKey());
                 }
             }
 

@@ -20,7 +20,7 @@ public class Island {
     public static volatile Field[][] fields = new Field[height][width];
     private static int countOfBoars = 1;
     private static int countOfBuffaloes = 1;
-    private static int countOfCaterpillars = 1;
+    private static int countOfCaterpillars = 10;
     private static int countOfDeer = 1;
     private static int countOfDucks = 1;
     private static int countOfGoats = 1;
@@ -36,7 +36,7 @@ public class Island {
     private static int countOfPlants = 200;
 
 
-    static {
+    static  {
 
         for(int i = 0; i < fields.length; i++) {
             for (int j = 0; j < fields[i].length; j++) {
@@ -46,21 +46,21 @@ public class Island {
         for(int i = 0; i < fields.length; i++){
             for(int j = 0; j < fields[i].length; j++){
 
-                fields[i][j].getFieldHashMap().put(new Boar(), countOfBoars);
-                fields[i][j].getFieldHashMap().put(new Buffalo(), countOfBuffaloes);
+//                fields[i][j].getFieldHashMap().put(new Boar(), countOfBoars);
+//                fields[i][j].getFieldHashMap().put(new Buffalo(), countOfBuffaloes);
                 fields[i][j].getFieldHashMap().put(new Caterpillar(), countOfCaterpillars);
-                fields[i][j].getFieldHashMap().put(new Deer(), countOfDeer);
+//                fields[i][j].getFieldHashMap().put(new Deer(), countOfDeer);
                 fields[i][j].getFieldHashMap().put(new Duck(), countOfDucks);
-                fields[i][j].getFieldHashMap().put(new Goat(), countOfGoats);
-                fields[i][j].getFieldHashMap().put(new Horse(), countOfHorses);
-                fields[i][j].getFieldHashMap().put(new Mouse(), countOfMouses);
-                fields[i][j].getFieldHashMap().put(new Rabbit(), countOfRabbits);
-                fields[i][j].getFieldHashMap().put(new Sheep(), countOfSheep);
-                fields[i][j].getFieldHashMap().put(new Bear(), countOfBear);
-                fields[i][j].getFieldHashMap().put(new Boa(), countOfBoas);
-                fields[i][j].getFieldHashMap().put(new Eagle(), countOfEagles);
-                fields[i][j].getFieldHashMap().put(new Fox(), countOfFoxes);
-                fields[i][j].getFieldHashMap().put(new Wolf(), countOfWolfs);
+//                fields[i][j].getFieldHashMap().put(new Goat(), countOfGoats);
+//                fields[i][j].getFieldHashMap().put(new Horse(), countOfHorses);
+//                fields[i][j].getFieldHashMap().put(new Mouse(), countOfMouses);
+//                fields[i][j].getFieldHashMap().put(new Rabbit(), countOfRabbits);
+//                fields[i][j].getFieldHashMap().put(new Sheep(), countOfSheep);
+//                fields[i][j].getFieldHashMap().put(new Bear(), countOfBear);
+//                fields[i][j].getFieldHashMap().put(new Boa(), countOfBoas);
+//                fields[i][j].getFieldHashMap().put(new Eagle(), countOfEagles);
+//                fields[i][j].getFieldHashMap().put(new Fox(), countOfFoxes);
+//                fields[i][j].getFieldHashMap().put(new Wolf(), countOfWolfs);
                 fields[i][j].getFieldHashMap().put(new Plants(), countOfPlants);
             }
         }
@@ -82,6 +82,9 @@ public class Island {
     public Field[][] getFields() {
         return fields;
     }
+    public Field getFields(Integer newX, Integer newY){
+        return fields[newY][newX];
+    }
 
     public void setFields(Field[][] fields) {
         this.fields = fields;
@@ -95,36 +98,42 @@ public class Island {
         while (step > 0){
             int direction = Animals.RANDOM.nextInt(5);
             if (isAvailableMove(newX, newY, width, height)){
-                switch (direction) {
-                    case UP:
-                        newY += 1;
-                        step--;
-                    case RIGHT:
-                        newX += 1;
-                        step--;
-                    case DOWN:
-                        newY -= 1;
-                        step--;
-                    case LEFT:
-                        newX -= 1;
-                        step--;
-                }
+                    if(newX < (height - 1) || newY < (width - 1)) {
+                        switch (direction) {
+                            case UP:
+                                if(newY == 0){
+                                    continue;
+                                }
+                                newY -= 1;
+                                step--;
+                            case RIGHT:
+                                if(newX == (width - 1)){
+                                    continue;
+                                }
+                                newX += 1;
+                                step--;
+                            case DOWN:
+                                if(newY == (height - 1)){
+                                    continue;
+                                }
+                                newY += 1;
+                                step--;
+                            case LEFT:
+                                if(newX == 0){
+                                    continue;
+                                }
+                                newX -= 1;
+                                step--;
+
+                        }
+                    }
+
 
                 fields[animals.getY()][animals.getX()].getFieldHashMap().put(
                         animals,
                         (fields[animals.getY()][animals.getX()].getFieldHashMap().get(animals) - 1)
                 );
 
-                if(newX == width){
-                   newX -= 1;
-                }else if(newX == 0){
-                    newX += 1;
-                }
-                if(newY == height){
-                    newY -= 1;
-                } else if (newY == 0) {
-                    newY += 1;
-                }
                 animals.setX(newX);
                 animals.setY(newY);
 
@@ -137,7 +146,7 @@ public class Island {
     }
 
     private boolean isAvailableMove(int newX, int newY, int maxX, int maxY){
-        if(newX >= 0 && newX < maxX && newY >= 0 && newY < maxY){
+        if((newX >= 0) && (newX < maxX )&& (newY >= 0) && (newY < maxY)){
             return true;
         }
         return false;
